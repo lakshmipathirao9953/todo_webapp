@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do List</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #todo-container {
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      #todo-header,
+      #todo-list,
+      #todo-footer {
+        padding: 20px;
+      }
+
+      #todo-list {
+        border-top: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+
+      #todo-list input[type="checkbox"] {
+        margin-right: 10px;
+      }
+
+      .task {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .task span {
+        flex-grow: 1;
+        padding: 0 10px;
+        word-wrap: break-word;
+      }
+
+      .task button {
+        background-color: #e44d26;
+        color: #fff;
+        border: none;
+        padding: 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .task button:hover {
+        background-color: #333;
+      }
+
+      #add-task-input {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        flex-grow: 1;
+        margin-right: 10px;
+      }
+
+      #add-task-button {
+        padding: 8px 12px;
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      #add-task-button:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="todo-container">
+      <div id="todo-header">
+        <h2>To-Do List</h2>
+      </div>
+      <div id="todo-list"></div>
+      <div id="todo-footer">
+        <input type="text" id="add-task-input" placeholder="Add a new task" />
+        <button id="add-task-button">Add Task</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const todoList = document.getElementById("todo-list");
+        const addTaskInput = document.getElementById("add-task-input");
+        const addTaskButton = document.getElementById("add-task-button");
+
+        function createTaskElement(taskText) {
+          const taskElement = document.createElement("div");
+          taskElement.classList.add("task");
+          taskElement.innerHTML = `
+          <input type="checkbox">
+          <span>${taskText}</span>
+          <button class="delete-task">Delete</button>
+          <button class="edit-task">Edit</button>
+        `;
+
+          // Attach event listeners for delete and edit buttons
+          taskElement
+            .querySelector(".delete-task")
+            .addEventListener("click", function () {
+              todoList.removeChild(taskElement);
+            });
+
+          taskElement
+            .querySelector(".edit-task")
+            .addEventListener("click", function () {
+              const newTaskText = prompt("Edit task:", taskText);
+
+              if (newTaskText !== null) {
+                taskElement.querySelector("span").textContent = newTaskText;
+              }
+            });
+
+          return taskElement;
+        }
+
+        addTaskButton.addEventListener("click", function () {
+          const taskText = addTaskInput.value.trim();
+
+          if (taskText !== "") {
+            const taskElement = createTaskElement(taskText);
+            todoList.appendChild(taskElement);
+            addTaskInput.value = "";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
